@@ -105,6 +105,26 @@ class UserTag(BaseTwitterTag):
     def get_json(self, twitter, **kwargs):
         return twitter.statuses.user_timeline(**kwargs)
 
+class ListTag(UserTag):
+
+    name = 'get_list_tweets'
+    options = Options(
+        'for', Argument('username'), 
+        'list', Argument('listname'),
+        'as', Argument('asvar', resolve=False),
+        'exclude', Argument('exclude', required=False),
+        'limit', Argument('limit', required=False),
+    )
+
+    def get_api_call_params(self, **kwargs):
+        params = super(ListTag, self).get_api_call_params(**kwargs)           
+        params.update({'owner_screen_name': kwargs['username'],
+                            'slug': kwargs['listname']})
+        return params
+    
+    def get_json(self, twitter, **kwargs):     
+        return twitter.lists.statuses(**kwargs)        
+
 
 class SearchTag(BaseTwitterTag):
     name = 'search_tweets'
@@ -128,4 +148,5 @@ class SearchTag(BaseTwitterTag):
 
 
 register.tag(UserTag)
+register.tag(ListTag)
 register.tag(SearchTag)
