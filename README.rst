@@ -114,7 +114,9 @@ Or everything from above together::
 
 List tag (experimental)
 -------------------------
+
 You can fetch tweets for a list::
+
     {% get_list_tweets for "ThePSF" list "python-news" as tweets %}
 
 You can use same limits and other commands with list tag.     
